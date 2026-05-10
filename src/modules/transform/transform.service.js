@@ -3,16 +3,15 @@ import puppeteer from "puppeteer";
 export class UsersServices {
   constructor() {}
 
-  async getPdf({ html, title, format}) {
+  async getPdf({ html, format }) {
     const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
 
     await page.setContent(html, { waitUntil: "networkidle0" });
 
     const pdf = await page.pdf({
-      path: `${title}.pdf` || "document.pdf",
       format: format || "A4",
-      printBackground: true, 
+      printBackground: true,
       margin: {
         top: "50px",
         bottom: "50px",

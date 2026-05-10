@@ -9,11 +9,14 @@ export class UsersController {
 
   async getPdf(req, res) {
     try {
-      const { html = "", title = "", format = "" } = req.body;
+      const { html = "", title = "", format = "", } = req.body;
+      const pdf = await usersService.getPdf({ html, title, format });
 
-      await usersService.getPdf({ html, title, format });
-
-      return res.contentType("application/json").status(201).json({ message: "PDF generado" });
+      return res
+        .contentType("application/pdf")
+        .setHeader("Content-Disposition", `attachment; filename="${title}.pdf"`)
+        .status(201)
+        .send(pdf);
     } catch (error) {
       return responseError(res, { message: error.message, code: 500 });
     }
