@@ -8,7 +8,7 @@ Esta es una API robusta y ligera diseñada para transformar estructuras HTML din
 # 🛠️ Tecnologías Principales
 
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=nodejs,js,express" height="50" />
+  <img src="https://skillicons.dev/icons?i=nodejs,js,express,html,tailwind" height="50" />
 </p>
 
 <br>
@@ -28,6 +28,7 @@ npm install
 # ⚙️ Configuración
 
 1. Copiar `.env.example` a `.env` y configurar las variables de entorno.
+2. Asigna el numero de ejecución del puerto a la variable `PORT` en el archivo `.env`.
 
 <br>
 
@@ -41,9 +42,8 @@ npm run start:dev
 
 <br>
 
-# 📖 Documentación de la API
+# 📖 Rutas de la API
 
-La documentación de la API está disponible en `/api-docs` cuando el servidor está ejecutándose.
-
-Ejemplo: `http://localhost:3000/api-docs`
-
+Documentación: `http://localhost:PORT/api-docs`
+Conversor de HTML a PDF: `http://localhost:PORT/transform/pdf`
+Interfaz de prueba: `http://localhost:PORT/frontend`
