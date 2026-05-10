@@ -6,9 +6,15 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./docs/swagger.js";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Importación de rutas
 import transformRoute from "./modules/transform/transform.route.js";
+import frontendRoute from "./modules/frontend/frontend.route.js";
 
 // Configuración de variables de entorno
 dotenv.config();
@@ -25,11 +31,13 @@ class App {
     this.middlewares();
     this.urls = {
       transform: "/transform",
+      frontend: "/frontend",
     };
     this.routes();
   }
 
   middlewares = () => {
+    this.app.use(express.static(path.join(__dirname, "public")));
     this.app.use(express.json());
     this.app.use(cors());
     this.app.use(
@@ -48,12 +56,18 @@ class App {
 
   routes = () => {
     this.app.use(this.urls.transform, transformRoute);
+    this.app.use(this.urls.frontend, frontendRoute);
   };
 
   start = () => {
     this.app.listen(this.port, () => {
-      console.log(`Server started on port ${this.port}`);
-      console.log(`API available at http://localhost:${this.port}/api-docs`);
+      console.log(`Servidor ejecutandose en el puerto: ${this.port}`);
+      console.log(
+        `Documentacion de la API en: http://localhost:${this.port}/api-docs`,
+      );
+      console.log(
+        `Frontend disponible en: http://localhost:${this.port}/frontend`,
+      );
     });
   };
 }
