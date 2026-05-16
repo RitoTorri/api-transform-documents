@@ -8,7 +8,7 @@ Esta es una API robusta y ligera diseñada para transformar estructuras HTML din
 # 🛠️ Tecnologías Principales
 
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=nodejs,js,express,html,tailwind" height="50" />
+  <img src="https://skillicons.dev/icons?i=nodejs,js,express,docker" height="50" />
 </p>
 
 <br>
@@ -55,4 +55,3 @@ node src/index.js
 Documentación: `http://localhost:PORT/api-docs`  
 Conversor de HTML a PDF: `http://localhost:PORT/transform/pdf`  
 Conversor de JSON a EXCEL: `http://localhost:PORT/transform/excel`  
-Interfaz de prueba: `http://localhost:PORT/frontend`
