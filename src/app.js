@@ -65,9 +65,6 @@ class App {
       console.log(
         `Documentacion de la API en: http://localhost:${this.port}/api-docs`,
       );
-      console.log(
-        `Frontend disponible en: http://localhost:${this.port}/frontend`,
-      );
     });
   };
 }
