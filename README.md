@@ -54,4 +54,5 @@ node src/index.js
 
 Documentación: `http://localhost:PORT/api-docs`  
 Conversor de HTML a PDF: `http://localhost:PORT/transform/pdf`  
+Conversor de JSON a EXCEL: `http://localhost:PORT/transform/excel`  
 Interfaz de prueba: `http://localhost:PORT/frontend`
