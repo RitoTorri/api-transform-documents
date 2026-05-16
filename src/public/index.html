@@ -1,18 +1,25 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PDF Architect · Professional API</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class" };
+    </script>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         font-family: "Plus Jakarta Sans", system-ui, sans-serif;
-        background-color: #f8fafc;
-        background-image: radial-gradient(#e2e8f0 0.8px, transparent 0.8px);
-        background-size: 24px 24px; /* Sutil patrón de puntos para un look de ingeniería */
+        background-color: #0f1117;
+        background-image: radial-gradient(#1e2030 0.8px, transparent 0.8px);
+        background-size: 24px 24px;
       }
 
       .code-font {
@@ -20,16 +27,15 @@
       }
 
       .glass-card {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(226, 232, 240, 0.8);
+        background: rgba(22, 24, 34, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(45, 48, 65, 0.8);
       }
 
-      /* Spinner minimalista */
       .loader {
         width: 18px;
         height: 18px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.2);
         border-radius: 50%;
         border-top-color: #fff;
         animation: spin 0.6s linear infinite;
@@ -40,28 +46,118 @@
         }
       }
 
-      /* Mejora de focus sin sobrecarga */
       .input-elegant {
         transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       }
       .input-elegant:focus {
-        border-color: #6366f1;
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        border-color: #818cf8;
+        box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.15);
         outline: none;
+      }
+
+      .tab-active {
+        background: #6366f1;
+        color: white;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+      }
+      .tab-inactive {
+        background: #1e2030;
+        color: #6b7280;
+      }
+      .tab-inactive:hover {
+        background: #2a2d3e;
+        color: #9ca3af;
+      }
+
+      .excel-table {
+        border-collapse: collapse;
+        width: auto;
+        min-width: 100%;
+        table-layout: auto;
+      }
+      .excel-table th {
+        background: #6366f1;
+        color: white;
+        font-weight: 600;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 10px 14px;
+        text-align: left;
+        border: 1px solid #4f46e5;
+        white-space: nowrap;
+      }
+      .excel-table td {
+        padding: 8px 14px;
+        border: 1px solid #2a2d3e;
+        font-size: 13px;
+        color: #d1d5db;
+        background: #1a1b26;
+        white-space: nowrap;
+        min-width: 80px;
+      }
+      .excel-table tr:hover td {
+        background: #222436;
+      }
+
+      .add-row-btn {
+        transition: all 0.2s ease;
+      }
+      .add-row-btn:active {
+        transform: scale(0.95);
+      }
+
+      .delete-btn {
+        opacity: 0;
+        transition: opacity 0.2s;
+        color: #f87171;
+        font-size: 16px;
+        line-height: 1;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+      }
+      .delete-btn:hover {
+        color: #ef4444;
+        background: rgba(239, 68, 68, 0.1);
+      }
+      tr:hover .delete-btn {
+        opacity: 1;
+      }
+
+      ::-webkit-scrollbar {
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1a1b26;
+        border-radius: 8px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #374151;
+        border-radius: 8px;
+      }
+
+      details summary {
+        list-style: none;
+      }
+      details summary::-webkit-details-marker {
+        display: none;
       }
     </style>
   </head>
   <body class="min-h-screen flex items-center justify-center p-6">
-    <main class="w-full max-w-xl">
+    <main class="w-full max-w-5xl">
       <article
-        class="glass-card rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.04)] overflow-hidden"
+        class="glass-card rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.4)] overflow-hidden"
       >
-        <!-- Header Refinado -->
         <header class="p-8 pb-0 flex justify-between items-center">
           <div>
             <div class="flex items-center gap-2 mb-1">
               <div
-                class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center"
+                class="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/30"
               >
                 <svg
                   class="w-5 h-5 text-white"
@@ -77,90 +173,124 @@
                   />
                 </svg>
               </div>
-              <h1 class="text-xl font-bold text-slate-900 tracking-tight">
+              <h1 class="text-xl font-bold text-gray-100 tracking-tight">
                 PDF Architect
               </h1>
             </div>
-            <p class="text-slate-500 text-sm font-medium">
+            <p class="text-gray-500 text-sm font-medium">
               Motor de renderizado estático
             </p>
           </div>
           <div class="text-right">
             <span
-              class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[10px] font-bold uppercase tracking-widest border border-slate-200"
+              class="px-3 py-1 bg-gray-800 text-gray-400 rounded-full text-[10px] font-bold uppercase tracking-widest border border-gray-700"
+              >v2.0 Stable</span
             >
-              v2.0 Stable
-            </span>
           </div>
         </header>
 
-        <!-- Formulario -->
-        <form id="pdfForm" class="p-8 space-y-6" novalidate>
-          <!-- Área de Código -->
+        <div class="px-8 pt-6 flex gap-2">
+          <button
+            id="tabPdf"
+            class="tab-active px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+              />
+            </svg>
+            PDF
+          </button>
+          <button
+            id="tabExcel"
+            class="tab-inactive px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            Excel
+          </button>
+        </div>
+
+        <!-- PDF -->
+        <form id="pdfForm" class="p-8 space-y-6">
           <div class="space-y-2">
             <div class="flex justify-between items-end">
               <label
                 for="htmlInput"
-                class="text-xs font-bold text-slate-700 uppercase tracking-wider"
-                >Estructura HTML</label
+                class="text-xs font-bold text-gray-400 uppercase tracking-wider"
+                >HTML</label
               >
-              <span class="text-[10px] text-slate-400 code-font"
-                >Format: HTML5 / CSS3</span
+              <span class="text-[10px] text-gray-600 code-font"
+                >HTML5 / CSS3</span
               >
             </div>
             <textarea
               id="htmlInput"
               rows="8"
-              class="w-full p-4 code-font text-sm bg-slate-900 text-indigo-300 rounded-2xl border-none focus:ring-2 focus:ring-indigo-500/50 resize-none shadow-inner"
+              class="w-full p-4 code-font text-sm bg-gray-900 text-indigo-300 rounded-2xl border border-gray-700 focus:ring-2 focus:ring-indigo-500/50 resize-none"
               placeholder="<!-- Escribe tu HTML aquí -->"
             >
-<h1>Reporte de Sistema</h1><p>Documento generado vía API segura.</p></textarea
+<h1>Reporte</h1><p>Documento PDF generado.</p></textarea
             >
           </div>
-
-          <!-- Configuración en fila -->
           <div class="grid grid-cols-2 gap-4">
             <div class="space-y-2">
               <label
                 for="titleInput"
-                class="text-xs font-bold text-slate-700 uppercase tracking-wider"
-                >Nombre Archivo</label
+                class="text-xs font-bold text-gray-400 uppercase tracking-wider"
+                >Nombre</label
               >
               <input
                 type="text"
                 id="titleInput"
-                class="input-elegant w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 font-medium"
-                placeholder="Ej: invoice-001"
-                value="documento-exportado"
+                class="input-elegant w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-sm text-gray-200"
+                value="documento"
               />
             </div>
             <div class="space-y-2">
               <label
                 for="formatInput"
-                class="text-xs font-bold text-slate-700 uppercase tracking-wider"
-                >Dimensiones</label
+                class="text-xs font-bold text-gray-400 uppercase tracking-wider"
+                >Formato</label
               >
               <select
                 id="formatInput"
-                class="input-elegant w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 font-medium appearance-none cursor-pointer"
+                class="input-elegant w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-sm text-gray-200"
               >
-                <option value="A4">A4 Standard</option>
-                <option value="Letter">Letter (US)</option>
+                <option value="A4">A4</option>
+                <option value="Letter">Letter</option>
                 <option value="Legal">Legal</option>
               </select>
             </div>
           </div>
-
-          <!-- Acción Principal -->
           <button
             type="submit"
-            id="submitBtn"
-            class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 active:transform active:scale-[0.98] text-white font-bold rounded-2xl shadow-xl shadow-indigo-200 transition-all duration-200 flex items-center justify-center gap-3 group"
+            id="submitPdfBtn"
+            class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 active:scale-[0.98] text-white font-bold rounded-2xl shadow-xl shadow-indigo-600/20 transition-all flex items-center justify-center gap-3"
           >
-            <span id="btnText">Compilar y Descargar</span>
-            <div id="btnLoader" class="hidden loader"></div>
+            <span id="btnPdfText">Descargar PDF</span>
+            <div id="btnPdfLoader" class="hidden loader"></div>
             <svg
-              id="btnIcon"
+              id="btnPdfIcon"
               class="w-5 h-5 group-hover:translate-x-1 transition-transform"
               fill="none"
               stroke="currentColor"
@@ -176,94 +306,394 @@
           </button>
         </form>
 
-        <!-- Feedback de Estado -->
+        <!-- Excel -->
+        <form id="excelForm" class="p-8 space-y-6 hidden">
+          <div class="space-y-2">
+            <label
+              for="excelName"
+              class="text-xs font-bold text-gray-400 uppercase tracking-wider"
+              >Nombre Archivo</label
+            >
+            <input
+              type="text"
+              id="excelName"
+              class="input-elegant w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-sm text-gray-200"
+              value="Mi Excel"
+            />
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex justify-between items-end">
+              <label
+                class="text-xs font-bold text-gray-400 uppercase tracking-wider"
+                >Columnas</label
+              >
+              <button
+                type="button"
+                id="addColumnBtn"
+                class="text-xs font-bold text-indigo-400 hover:text-indigo-300 px-3 py-1 bg-indigo-500/10 rounded-lg border border-indigo-500/20"
+              >
+                + Columna
+              </button>
+            </div>
+            <div id="columnsContainer" class="space-y-2">
+              <!-- Se llena dinámicamente -->
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="flex justify-between items-end">
+              <label
+                class="text-xs font-bold text-gray-400 uppercase tracking-wider"
+                >Datos</label
+              >
+              <button
+                type="button"
+                id="addRowBtn"
+                class="text-xs font-bold text-emerald-400 hover:text-emerald-300 px-3 py-1 bg-emerald-500/10 rounded-lg border border-emerald-500/20"
+              >
+                + Fila
+              </button>
+            </div>
+            <div class="overflow-x-auto rounded-xl border border-gray-700">
+              <table id="dataTable" class="excel-table w-full">
+                <thead id="tableHead"></thead>
+                <tbody id="tableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <details class="mt-4" open>
+            <summary
+              class="text-xs font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:text-gray-400"
+            >
+              📋 JSON Preview
+            </summary>
+            <pre
+              id="jsonPreview"
+              class="mt-2 p-4 bg-gray-900 text-emerald-400 rounded-xl text-xs code-font overflow-x-auto border border-gray-700"
+            ></pre>
+          </details>
+
+          <button
+            type="submit"
+            id="submitExcelBtn"
+            class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white font-bold rounded-2xl shadow-xl shadow-emerald-600/20 transition-all flex items-center justify-center gap-3"
+          >
+            <span id="btnExcelText">Descargar Excel</span>
+            <div id="btnExcelLoader" class="hidden loader"></div>
+            <svg
+              id="btnExcelIcon"
+              class="w-5 h-5 group-hover:translate-x-1 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+          </button>
+        </form>
+
         <div id="statusMessage" class="hidden px-8 pb-8"></div>
       </article>
 
       <footer class="mt-8 flex justify-between items-center px-4">
         <p
-          class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"
+          class="text-[10px] font-bold text-gray-600 uppercase tracking-widest"
         >
-          Powered by NestJS & Puppeteer
+          Express & Puppeteer
         </p>
-        <div class="flex gap-4">
+        <div class="flex gap-3">
           <div
             class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"
+          ></div>
+          <div
+            class="w-2 h-2 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.5)]"
           ></div>
         </div>
       </footer>
     </main>
 
     <script>
-      // Lógica optimizada (Idéntica a tu funcional original pero con los nuevos IDs visuales)
       (function () {
-        const form = document.getElementById("pdfForm");
-        const submitBtn = document.getElementById("submitBtn");
-        const btnText = document.getElementById("btnText");
-        const btnLoader = document.getElementById("btnLoader");
-        const btnIcon = document.getElementById("btnIcon");
+        // Tabs
+        const tabPdf = document.getElementById("tabPdf");
+        const tabExcel = document.getElementById("tabExcel");
+        const pdfForm = document.getElementById("pdfForm");
+        const excelForm = document.getElementById("excelForm");
         const statusMessage = document.getElementById("statusMessage");
 
-        form.addEventListener("submit", async (e) => {
+        // PDF
+        const submitPdfBtn = document.getElementById("submitPdfBtn");
+        const btnPdfText = document.getElementById("btnPdfText");
+        const btnPdfLoader = document.getElementById("btnPdfLoader");
+        const btnPdfIcon = document.getElementById("btnPdfIcon");
+
+        // Excel
+        const submitExcelBtn = document.getElementById("submitExcelBtn");
+        const btnExcelText = document.getElementById("btnExcelText");
+        const btnExcelLoader = document.getElementById("btnExcelLoader");
+        const btnExcelIcon = document.getElementById("btnExcelIcon");
+        const columnsContainer = document.getElementById("columnsContainer");
+        const tableHead = document.getElementById("tableHead");
+        const tableBody = document.getElementById("tableBody");
+        const jsonPreview = document.getElementById("jsonPreview");
+
+        // ====== DEFAULT DATA ======
+        const defaultColumns = [
+          { header: "ID", key: "id" },
+          { header: "Nombre", key: "name" },
+        ];
+        const defaultData = [
+          { id: 1, name: "Juan Pérez" },
+          { id: 2, name: "Carlos Perez" },
+        ];
+
+        // ====== INIT ======
+        function initExcelForm() {
+          columnsContainer.innerHTML = "";
+          defaultColumns.forEach((col) =>
+            addColumnElement(col.header, col.key),
+          );
+          renderTable();
+          updatePreview();
+        }
+
+        function addColumnElement(header = "Nueva", key = "nueva") {
+          const div = document.createElement("div");
+          div.className = "column-pair flex gap-2 items-start";
+          div.innerHTML = `
+            <input type="text" value="${header}" class="col-header input-elegant flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-gray-200 font-medium" placeholder="Header"/>
+            <input type="text" value="${key}" class="col-key input-elegant flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-xs text-gray-500 font-mono" placeholder="Key"/>
+            <button type="button" class="remove-col-btn text-red-400 hover:text-red-300 font-bold px-2 py-2 text-xs leading-none">×</button>
+          `;
+          div.querySelector(".remove-col-btn").addEventListener("click", () => {
+            div.remove();
+            renderTable();
+          });
+          div
+            .querySelectorAll("input")
+            .forEach((i) => i.addEventListener("input", renderTable));
+          columnsContainer.appendChild(div);
+        }
+
+        function getColumnsConfig() {
+          return Array.from(
+            columnsContainer.querySelectorAll(".column-pair"),
+          ).map((pair) => ({
+            header: pair.querySelector(".col-header").value.trim() || "Col",
+            key:
+              pair.querySelector(".col-key").value.trim() ||
+              pair
+                .querySelector(".col-header")
+                .value.trim()
+                .toLowerCase()
+                .replace(/\s+/g, "_"),
+          }));
+        }
+
+        function renderTable() {
+          const config = getColumnsConfig();
+
+          // Header
+          tableHead.innerHTML = `<tr>${config.map((c) => `<th>${c.header}</th>`).join("")}<th class="w-10"></th></tr>`;
+
+          // Si no hay filas, crear con datos default
+          if (tableBody.children.length === 0) {
+            defaultData.forEach((row) => {
+              const tr = createRow(config, row);
+              tableBody.appendChild(tr);
+            });
+          } else {
+            // Actualizar filas existentes
+            Array.from(tableBody.querySelectorAll("tr")).forEach((row) => {
+              const cells = row.querySelectorAll("td");
+              const oldVals = Array.from(cells)
+                .slice(0, -1)
+                .map((td) => td.textContent.trim());
+              row.innerHTML = `
+                ${config.map((_, i) => `<td contenteditable="true">${oldVals[i] || ""}</td>`).join("")}
+                <td class="w-10"><button type="button" class="delete-btn font-bold text-xs">×</button></td>
+              `;
+              row.querySelector(".delete-btn").addEventListener("click", () => {
+                row.remove();
+                updatePreview();
+              });
+            });
+          }
+
+          updatePreview();
+        }
+
+        function createRow(config, dataObj = {}) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            ${config.map((c) => `<td contenteditable="true">${dataObj[c.key] !== undefined ? dataObj[c.key] : ""}</td>`).join("")}
+            <td class="w-10"><button type="button" class="delete-btn font-bold text-xs">×</button></td>
+          `;
+          tr.querySelector(".delete-btn").addEventListener("click", () => {
+            tr.remove();
+            updatePreview();
+          });
+          return tr;
+        }
+
+        function buildPayload() {
+          const config = getColumnsConfig();
+          const colums = config.map((c) => ({ header: c.header, key: c.key }));
+
+          const data = Array.from(tableBody.querySelectorAll("tr")).map(
+            (row) => {
+              const cells = row.querySelectorAll("td");
+              const vals = Array.from(cells)
+                .slice(0, -1)
+                .map((td) => td.textContent.trim());
+              const obj = {};
+              config.forEach((c, i) => {
+                const val = vals[i] || "";
+                obj[c.key] = isNaN(val) || val === "" ? val : Number(val);
+              });
+              return obj;
+            },
+          );
+
+          return {
+            name:
+              document.getElementById("excelName").value.trim() || "Mi Excel",
+            colums,
+            data,
+          };
+        }
+
+        function updatePreview() {
+          jsonPreview.textContent = JSON.stringify(buildPayload(), null, 2);
+        }
+
+        // ====== EVENTS ======
+        document
+          .getElementById("addColumnBtn")
+          .addEventListener("click", () => {
+            addColumnElement();
+            renderTable();
+          });
+
+        document.getElementById("addRowBtn").addEventListener("click", () => {
+          const config = getColumnsConfig();
+          tableBody.appendChild(createRow(config));
+          updatePreview();
+        });
+
+        tableBody.addEventListener("input", updatePreview);
+        document
+          .getElementById("excelName")
+          .addEventListener("input", updatePreview);
+
+        // Tabs
+        tabPdf.addEventListener("click", () => {
+          tabPdf.className =
+            "tab-active px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2";
+          tabExcel.className =
+            "tab-inactive px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2";
+          pdfForm.classList.remove("hidden");
+          excelForm.classList.add("hidden");
+          statusMessage.classList.add("hidden");
+        });
+
+        tabExcel.addEventListener("click", () => {
+          tabExcel.className =
+            "tab-active px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2";
+          tabPdf.className =
+            "tab-inactive px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2";
+          excelForm.classList.remove("hidden");
+          pdfForm.classList.add("hidden");
+          statusMessage.classList.add("hidden");
+          initExcelForm();
+        });
+
+        // ====== SUBMIT PDF ======
+        pdfForm.addEventListener("submit", async (e) => {
           e.preventDefault();
           const html = document.getElementById("htmlInput").value.trim();
           const title = document.getElementById("titleInput").value.trim();
           const format = document.getElementById("formatInput").value;
-
-          if (!html) {
-            showMessage("El contenido HTML es obligatorio", "error");
-            return;
-          }
-
-          setLoading(true);
-          statusMessage.classList.add("hidden");
-
+          if (!html) return showMessage("HTML requerido", "error");
+          setPdfLoading(true);
           try {
-            const response = await fetch(
-              "http://localhost:3000/transform/pdf",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ html, title, format }),
-              },
-            );
-
-            if (!response.ok)
-              throw new Error("Error en la respuesta del servidor");
-
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = `${title || "archivo"}.pdf`;
-            link.click();
-            showMessage("Documento procesado con éxito", "success");
-          } catch (error) {
-            showMessage(error.message, "error");
+            const res = await fetch("http://localhost:3000/transform/pdf", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ html, title, format }),
+            });
+            if (!res.ok) throw new Error("Error del servidor");
+            downloadBlob(await res.blob(), `${title || "doc"}.pdf`);
+            showMessage("✅ PDF generado", "success");
+          } catch (err) {
+            showMessage("❌ " + err.message, "error");
           } finally {
-            setLoading(false);
+            setPdfLoading(false);
           }
         });
 
-        function setLoading(isLoading) {
-          submitBtn.disabled = isLoading;
-          btnText.innerText = isLoading
-            ? "Procesando..."
-            : "Compilar y Descargar";
-          btnLoader.classList.toggle("hidden", !isLoading);
-          btnIcon.classList.toggle("hidden", isLoading);
-          submitBtn.classList.toggle("opacity-80", isLoading);
+        // ====== SUBMIT EXCEL ======
+        excelForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const payload = buildPayload();
+          if (!payload.colums.length || !payload.data.length)
+            return showMessage("Faltan columnas o datos", "error");
+          setExcelLoading(true);
+          try {
+            const res = await fetch("http://localhost:3000/transform/excel", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+            if (!res.ok) throw new Error("Error del servidor");
+            downloadBlob(await res.blob(), `${payload.name}.xlsx`);
+            showMessage("✅ Excel generado", "success");
+          } catch (err) {
+            showMessage("❌ " + err.message, "error");
+          } finally {
+            setExcelLoading(false);
+          }
+        });
+
+        // ====== HELPERS ======
+        function setPdfLoading(l) {
+          submitPdfBtn.disabled = l;
+          btnPdfText.innerText = l ? "Procesando..." : "Descargar PDF";
+          btnPdfLoader.classList.toggle("hidden", !l);
+          btnPdfIcon.classList.toggle("hidden", l);
+        }
+
+        function setExcelLoading(l) {
+          submitExcelBtn.disabled = l;
+          btnExcelText.innerText = l ? "Procesando..." : "Descargar Excel";
+          btnExcelLoader.classList.toggle("hidden", !l);
+          btnExcelIcon.classList.toggle("hidden", l);
+        }
+
+        function downloadBlob(blob, name) {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = name;
+          a.click();
+          URL.revokeObjectURL(url);
         }
 
         function showMessage(text, type) {
-          const isSuccess = type === "success";
-          statusMessage.innerHTML = `
-                    <div class="flex items-center gap-3 p-4 rounded-xl text-xs font-bold uppercase tracking-tight ${isSuccess ? "bg-emerald-50 text-emerald-700 border border-emerald-100" : "bg-rose-50 text-rose-700 border border-rose-100"}">
-                        <span>${text}</span>
-                    </div>
-                `;
+          const ok = type === "success";
+          statusMessage.innerHTML = `<div class="flex items-center gap-3 p-4 rounded-xl text-xs font-bold uppercase tracking-tight ${ok ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-red-500/10 text-red-400 border border-red-500/20"}"><span>${text}</span></div>`;
           statusMessage.classList.remove("hidden");
         }
+
+        // Init default
+        initExcelForm();
       })();
     </script>
   </body>

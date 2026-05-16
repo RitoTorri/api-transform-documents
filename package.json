@@ -1,12 +1,8 @@
 {
   "name": "api-transform-documents",
   "version": "1.0.0",
-  "description": "API para convertir HTML y Tailwind CSS en documentos PDF.",
+  "description": "API para transformar HTML y objetos JSON a documentos de PDF y EXCEL",
   "main": "index.js",
-  "scripts": {
-    "start:dev": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [],
   "author": {
     "name": "Jesus Cortez",
@@ -18,15 +14,13 @@
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
+    "exceljs": "^4.4.0",
     "express": "^5.2.1",
-    "express-rate-limit": "^8.5.1",
+    "express-rate-limit": "^8.5.2",
     "express-validator": "^7.3.2",
     "morgan": "^1.10.1",
-    "puppeteer": "^24.43.0",
+    "puppeteer": "^25.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.14"
   }
 }

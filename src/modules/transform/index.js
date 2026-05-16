@@ -1,10 +1,10 @@
-import { UsersServices } from './transform.service.js';
-import { UsersController } from './transform.controller.js';
+import { TransformServices } from './transform.service.js';
+import { TransformController } from './transform.controller.js';
 
-const usersService = new UsersServices();
-const usersController = new UsersController();
+const transformServices = new TransformServices();
+const transformController = new TransformController();
 
 export {
-    usersService,
-    usersController
+    transformServices,
+    transformController
 }

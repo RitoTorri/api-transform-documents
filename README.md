@@ -1,7 +1,7 @@
-# 📄 API de Transformación de Documentos PDF
+# 📄 API de Transformación de Documentos PDF y Excel
 
-🚀 Conversor de HTML a PDF con soporte para Tailwind CSS
-Esta es una API robusta y ligera diseñada para transformar estructuras HTML dinámicas en documentos PDF profesionales, permitiendo el uso de Tailwind CSS para un diseño moderno y estático.
+🚀 Conversor de HTML a PDF y JSONS a Excel con soporte para Tailwind CSS
+Esta es una API robusta y ligera diseñada para transformar estructuras HTML dinámicas en documentos PDF profesionales, permitiendo el uso de Tailwind CSS para un diseño moderno y estático. También permite generar archivos Excel a partir de JSON.
 
 <br>
 
@@ -20,15 +20,19 @@ git clone https://github.com/RitoTorri/api-transform-documents
 
 cd api-transform-documents
 
-npm install
+pnpm install
 ```
 
 <br>
 
 # ⚙️ Configuración
 
-1. Copiar `.env.example` a `.env` y configurar las variables de entorno.
-2. Asigna el numero de ejecución del puerto a la variable `PORT` en el archivo `.env`.
+Copiar `.env.example` a `.env` y configurar las variables de entorno.
+
+| Variable      |     Tipo     | Descripción                                                                                       | Ejemplo / Valor por defecto                                            |
+| :------------ | :----------: | :------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------- |
+| `PORT`        |    Número    | Puerto local en el que se levantará y escuchará el servidor de la API.                            | `3000`                                                                 |
+| `CHROME_PATH` | Texto (Ruta) | Ruta absoluta del ejecutable del navegador desde donde se descargarans los archivos transformados | `"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"` |
 
 <br>
 
@@ -37,7 +41,11 @@ npm install
 Para ejecutar el servidor de desarrollo:
 
 ```bash
-npm run start:dev
+# Entorno de desarrollo
+node --watch src/index.js
+
+# Entorno de producción
+node src/index.js
 ```
 
 <br>
@@ -46,4 +54,4 @@ npm run start:dev
 
 Documentación: `http://localhost:PORT/api-docs`  
 Conversor de HTML a PDF: `http://localhost:PORT/transform/pdf`  
-Interfaz de prueba: `http://localhost:PORT/frontend`  
+Interfaz de prueba: `http://localhost:PORT/frontend`
